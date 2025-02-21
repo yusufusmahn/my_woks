@@ -1,4 +1,4 @@
-expenses = []
+store_expenses = []
 
 print("WELCOME TO SEMICOLON EXPRESS TRACKER APP")
 print("-------------------------------------------------")
@@ -25,24 +25,24 @@ while True:
 		while amount < 1:
 			amount = float(input("Incorrect!!! Kindly enter correct amount: "))
 		expense = {"date": date, "description": description, "amount": amount}
-		expenses.append(expense)
+		store_expenses.append(expense)
 		print("Expense added!")
 
 	elif choice == 2:
-		if len(expenses) == 0:
+		if len(store_expenses) == 0:
 			print("No expenses recorded, Kindly select :1: to add Expense.")
 		else:
 			print("Expenses:")
 
-		for expense in expenses:
+		for expense in store_expenses:
 			print(f"{expense['date']},{expense['description']}:,${expense['amount']:.2f}")
 
 	elif choice == 3:
 		total = 0
-		if len(expenses) == 0:
+		if len(store_expenses) == 0:
 			print("No expenses recorded, Kindly select :1: to add Expense.")
 		else:
-			for expense in expenses:
+			for expense in store_expenses:
 				total += expense['amount']
 		print(f"Total Expenses: ${total:.2f}")
 
