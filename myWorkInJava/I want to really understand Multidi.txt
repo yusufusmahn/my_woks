@@ -1,0 +1,480 @@
+I want to really understand Multidimensional array in java and how to manipulate it, using whatever type of loop and also, emphasis on nested loop
+Okay, so I need to understand multidimensional arrays in Java and how to manipulate them using loops, especially nested loops. Let's start from the basics. I know that an array is a container that holds a fixed number of values of a single type. A multidimensional array is an array of arrays, right? Like, a 2D array is an array where each element is another array.
+
+First, how do you declare a multidimensional array in Java? For a 2D array, you can do something like int[][] matrix;. Then you need to initialize it. You can initialize it with specific dimensions, like matrix = new int[3][4]; which creates a 3x4 grid. Or you can initialize it with values directly, like int[][] matrix = {{1,2,3}, {4,5,6}, {7,8,9}};. That makes a 3x3 array.
+
+Now, accessing elements. To get the element at row 1, column 2, you do matrix[1][2]. Remember that indexes start at 0, so the first row is 0, the first column is 0. So in the example I gave, matrix[0][0] is 1, matrix[0][2] is 3, matrix[1][0] is 4, etc.
+
+But how do loops come into play here? Well, to iterate through each element, you need nested loops. For a 2D array, you'll have an outer loop for the rows and an inner loop for the columns. So, for example:
+
+for (int i = 0; i < matrix.length; i++) {
+
+for (int j = 0; j < matrix[i].length; j++) {
+
+System.out.print(matrix[i][j] + " ");
+
+}
+
+System.out.println();
+
+}
+
+This should print each row on a separate line. Wait, matrix.length gives the number of rows, and matrix[i].length gives the number of columns in row i. That's important because in Java, each row can have a different length (jagged arrays). So not all rows need to have the same number of columns.
+
+But most of the time, we deal with rectangular arrays where each row has the same number of columns. Still, it's good to remember that Java allows jagged arrays.
+
+What about 3D arrays? They are arrays of arrays of arrays. So a 3D array can be declared as int[][][] cube; and initialized as cube = new int[3][4][5];. Accessing an element would be cube[i][j][k]. To loop through it, you need three nested loops.
+
+Let me think about manipulation. Suppose I want to fill a 2D array with values. Let's say I want to create a multiplication table. The element at [i][j] should be (i+1)*(j+1). So rows and columns start at 0, but the values start at 1. So:
+
+int[][] multiplicationTable = new int[10][10];
+
+for (int i = 0; i < multiplicationTable.length; i++) {
+
+for (int j = 0; j < multiplicationTable[i].length; j++) {
+
+multiplicationTable[i][j] = (i+1)*(j+1);
+
+}
+
+}
+
+Yes, that makes sense. Each element is the product of (row index +1) and (column index +1).
+
+Another example: summing all elements in a 2D array. Initialize a sum variable to 0, then loop through each element and add to sum.
+
+int sum = 0;
+
+for (int i = 0; i < matrix.length; i++) {
+
+for (int j = 0; j < matrix[i].length; j++) {
+
+sum += matrix[i][j];
+
+}
+
+}
+
+What about modifying elements? Let's say I want to increment each element by 1. Then:
+
+for (int i = 0; i < matrix.length; i++) {
+
+for (int j = 0; j < matrix[i].length; j++) {
+
+matrix[i][j]++;
+
+}
+
+}
+
+That's straightforward. But what if the array is jagged? Like, some rows have different lengths. The inner loop uses matrix[i].length, so it should handle that automatically.
+
+Wait, how do you create a jagged array? For example:
+
+int[][] jagged = new int[3][];
+
+jagged[0] = new int[2];
+
+jagged[1] = new int[3];
+
+jagged[2] = new int[4];
+
+So each row has a different length. When looping, the inner loop should adjust accordingly. So nested loops are essential here to handle varying lengths.
+
+Another manipulation example: transposing a matrix. Transposing means rows become columns and vice versa. So element at [i][j] becomes [j][i]. But this is only possible if the matrix is rectangular. For a square matrix, you can do it in place, but for a rectangular matrix, you need to create a new array.
+
+Let's say the original matrix is m x n. The transposed matrix will be n x m. So:
+
+int[][] original = {{1,2,3}, {4,5,6}}; // 2x3
+
+int[][] transposed = new int[3][2];
+
+for (int i = 0; i < original.length; i++) {
+
+for (int j = 0; j < original[i].length; j++) {
+
+transposed[j][i] = original[i][j];
+
+}
+
+}
+
+But wait, when i=0 and j=0, transposed[0][0] = original[0][0] =1. When i=0, j=1: transposed[1][0] =2. When i=0, j=2: transposed[2][0] =3. Then i=1, j=0: transposed[0][1] =4. So the transposed matrix will be 3 rows and 2 columns. So yes, the loops work here because original.length is 2, original[i].length is 3. So transposed is 3x2. But when creating transposed, you have to make sure that each row in transposed has the correct number of columns. Since the original is 2x3, transposed is 3x2. So the outer loop runs for original's rows (2 times), inner loop runs for original's columns (3 times). Assigning transposed[j][i] = original[i][j].
+
+But wait, in Java, when you initialize transposed as new int[3][2], each row in transposed is initialized with 2 columns. So that's correct.
+
+Another example: finding the sum of each row. So for each row, sum its elements and store the sum in a 1D array.
+
+int[][] matrix = ...;
+
+int[] rowSums = new int[matrix.length];
+
+for (int i = 0; i < matrix.length; i++) {
+
+int sum = 0;
+
+for (int j = 0; j < matrix[i].length; j++) {
+
+sum += matrix[i][j];
+
+}
+
+rowSums[i] = sum;
+
+}
+
+Yes, that's using a nested loop where the outer loop iterates each row, and the inner loop sums the elements in that row.
+
+Similarly, sum of each column. But columns are across different rows. So you need to iterate each column index, then for each row, add the element at that column. But you have to ensure that all rows have that column. For jagged arrays, this could be a problem. Let's assume it's a rectangular array.
+
+int cols = matrix[0].length;
+
+int[] colSums = new int[cols];
+
+for (int j = 0; j < cols; j++) {
+
+int sum = 0;
+
+for (int i = 0; i < matrix.length; i++) {
+
+sum += matrix[i][j];
+
+}
+
+colSums[j] = sum;
+
+}
+
+But this will fail if any row has a different number of columns. So for a rectangular array, it's safe. For a jagged array, you need to check if each row has at least j+1 columns. Maybe:
+
+for (int j = 0; j < cols; j++) {
+
+int sum = 0;
+
+for (int i = 0; i < matrix.length; i++) {
+
+if (j < matrix[i].length) {
+
+sum += matrix[i][j];
+
+}
+
+}
+
+colSums[j] = sum;
+
+}
+
+But then how do you determine the maximum number of columns? Because in a jagged array, the number of columns per row varies. So first, find the maximum column length.
+
+int maxCols = 0;
+
+for (int i = 0; i < matrix.length; i++) {
+
+if (matrix[i].length > maxCols) {
+
+maxCols = matrix[i].length;
+
+}
+
+}
+
+Then colSums would be of size maxCols, and when summing, check if the current row has that column.
+
+So in code:
+
+int maxCols = 0;
+
+for (int i = 0; i < matrix.length; i++) {
+
+if (matrix[i].length > maxCols) {
+
+maxCols = matrix[i].length;
+
+}
+
+}
+
+int[] colSums = new int[maxCols];
+
+for (int j = 0; j < maxCols; j++) {
+
+int sum = 0;
+
+for (int i = 0; i < matrix.length; i++) {
+
+if (j < matrix[i].length) {
+
+sum += matrix[i][j];
+
+}
+
+}
+
+colSums[j] = sum;
+
+}
+
+But this is getting more complex. So handling jagged arrays requires more careful code.
+
+Another example: searching for a value in a 2D array. You can use nested loops to check each element.
+
+public static boolean contains(int[][] matrix, int target) {
+
+for (int i = 0; i < matrix.length; i++) {
+
+for (int j = 0; j < matrix[i].length; j++) {
+
+if (matrix[i][j] == target) {
+
+return true;
+
+}
+
+}
+
+}
+
+return false;
+
+}
+
+This function returns true if target is found in the array.
+
+What about modifying elements based on their position? For example, setting all elements on the diagonal to 1. In a square matrix:
+
+for (int i = 0; i < matrix.length; i++) {
+
+matrix[i][i] = 1;
+
+}
+
+But if the matrix is not square, say rows > cols, then you need to loop up to the minimum of rows and columns.
+
+int min = Math.min(matrix.length, matrix[0].length);
+
+for (int i = 0; i < min; i++) {
+
+matrix[i][i] = 1;
+
+}
+
+But again, if it's jagged, you have to check if matrix[i] has at least i columns.
+
+for (int i = 0; i < matrix.length; i++) {
+
+if (i < matrix[i].length) {
+
+matrix[i][i] = 1;
+
+}
+
+}
+
+That way, even if a row is shorter than its row index, it won't cause an index out of bounds.
+
+What about iterating with enhanced for loops? For 2D arrays, you can use:
+
+for (int[] row : matrix) {
+
+for (int element : row) {
+
+System.out.print(element + " ");
+
+}
+
+System.out.println();
+
+}
+
+This is more concise, but you lose access to the indices. So if you need to know the indices (like for modifying elements based on their position), you need the traditional for loop. But for simply accessing elements, enhanced loops are cleaner.
+
+But wait, when using enhanced loops, you can't modify the elements if they are primitives? Wait, no. Because in Java, when you have a loop variable like int element : row, that's a copy. So if you do element = 5; it won't change the array. So to modify elements, you need to use the traditional index-based loops.
+
+Yes, because the enhanced loop gives you a copy of the value, not a reference to the actual array element. So for modifying elements, stick to index-based loops.
+
+Another thing: when initializing a multidimensional array, you can have partial initialization. For example:
+
+int[][] arr = new int[3][];
+
+arr[0] = new int[]{1,2};
+
+arr[1] = new int[]{3,4,5};
+
+arr[2] = new int[]{6};
+
+This creates a jagged array where each row is initialized separately.
+
+So, key points:
+
+- Multidimensional arrays are arrays of arrays.
+
+- Can be rectangular or jagged.
+
+- Use nested loops to traverse and manipulate elements.
+
+- Be cautious with indices to avoid out of bounds errors.
+
+- Enhanced for loops are good for read-only access, but index-based loops are needed for modification.
+
+Let me test my understanding with an example. Let's say I need to create a 2D array where each element is the sum of its row and column indices. So element [i][j] = i + j.
+
+int[][] sumIndices = new int[4][5];
+
+for (int i = 0; i < sumIndices.length; i++) {
+
+for (int j = 0; j < sumIndices[i].length; j++) {
+
+sumIndices[i][j] = i + j;
+
+}
+
+}
+
+Yes, this would fill the array such that each element is the sum of its row and column indices. For example, sumIndices[2][3] = 2 + 3 =5.
+
+Another example: rotating a matrix 90 degrees clockwise. For a square matrix, this can be done by transposing and then reversing each row. Or another method. Let's think.
+
+The standard approach is to transpose the matrix and then reverse each row. So:
+
+1 2 3       1 4 7       7 4 1
+
+4 5 6  -> transpose -> 2 5 8 -> reverse each row -> 8 5 2
+
+7 8 9       3 6 9       9 6 3
+
+Wait, no. Wait, transposing swaps rows and columns, so:
+
+Original:
+
+1 2 3
+
+4 5 6
+
+7 8 9
+
+Transpose:
+
+1 4 7
+
+2 5 8
+
+3 6 9
+
+Then reversing each row gives:
+
+7 4 1
+
+8 5 2
+
+9 6 3
+
+Which is the 90-degree rotation. So code:
+
+public static void rotate90(int[][] matrix) {
+
+// transpose
+
+for (int i = 0; i < matrix.length; i++) {
+
+for (int j = i; j < matrix[i].length; j++) {
+
+int temp = matrix[i][j];
+
+matrix[i][j] = matrix[j][i];
+
+matrix[j][i] = temp;
+
+}
+
+}
+
+// reverse each row
+
+for (int i = 0; i < matrix.length; i++) {
+
+for (int j = 0; j < matrix[i].length / 2; j++) {
+
+int temp = matrix[i][j];
+
+matrix[i][j] = matrix[i][matrix[i].length - 1 - j];
+
+matrix[i][matrix[i].length - 1 - j] = temp;
+
+}
+
+}
+
+}
+
+But this works only for square matrices. Also, during transposition, the inner loop starts at j=i to avoid swapping twice. Because if you swap i,j and then j,i again, you end up undoing the swap.
+
+Wait, for transposing, you need to swap elements across the diagonal. So for element [i][j], you swap with [j][i], but only once. So by starting j from i, you avoid swapping elements twice.
+
+Yes, that's correct. So the transpose part loops over i from 0 to length, and for each i, j starts from i. So for a 3x3 matrix, when i=0, j runs from 0 to 2, swapping (0,0) (no change), (0,1) with (1,0), (0,2) with (2,0). Then i=1, j starts from 1, swaps (1,1) (no change), (1,2) with (2,1). Then i=2, j=2, swaps nothing. Then each row is reversed.
+
+This should rotate the matrix 90 degrees clockwise.
+
+But this is a bit more advanced. But it's a good example of manipulating a 2D array with nested loops.
+
+Another manipulation: spiral order traversal. But that's more complex. Let's think simpler.
+
+How about finding the maximum value in a 2D array?
+
+public static int findMax(int[][] matrix) {
+
+int max = Integer.MIN_VALUE;
+
+for (int[] row : matrix) {
+
+for (int element : row) {
+
+if (element > max) {
+
+max = element;
+
+}
+
+}
+
+}
+
+return max;
+
+}
+
+This uses enhanced for loops, which is fine because we don't need indices here.
+
+But to get the position of the maximum element, you need indices:
+
+public static int[] findMaxPosition(int[][] matrix) {
+
+int max = Integer.MIN_VALUE;
+
+int[] position = {-1, -1};
+
+for (int i = 0; i < matrix.length; i++) {
+
+for (int j = 0; j < matrix[i].length; j++) {
+
+if (matrix[i][j] > max) {
+
+max = matrix[i][j];
+
+position[0] = i;
+
+position[1] = j;
+
+}
+
+}
+
+}
+
+return position;
+
+}
+
+This returns an array with the row and column indices of the maximum element. If the matrix is empty, returns [-1, -1]. But need to handle cases where some rows are empty.
+
+But in Java, when you create a
